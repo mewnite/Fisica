@@ -1,0 +1,111 @@
+*{
+    margin: auto;
+    padding: 0;
+}
+
+
+.info{
+    position: absolute;
+   display: none;
+    left: 0;
+    width: 200px;
+    height: 200px;
+    background-color: black;
+}
+
+
+.contenedorSuperior{
+    width: 100%;
+    height: 50px;
+    background: rgb(0,0,0);
+    background: -moz-radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(83,120,195,1) 49%, rgba(45,115,253,1) 100%);
+    background: -webkit-radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(83,120,195,1) 49%, rgba(45,115,253,1) 100%);
+    background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(83,120,195,1) 49%, rgba(45,115,253,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#2d73fd",GradientType=1);
+    
+}
+
+.contenedorInf{
+    position: absolute;
+    display: flex;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    background: rgb(0,0,0);
+    background: -moz-radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(83,120,195,1) 49%, rgba(45,115,253,1) 100%);
+    background: -webkit-radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(83,120,195,1) 49%, rgba(45,115,253,1) 100%);
+    background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(83,120,195,1) 49%, rgba(45,115,253,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#2d73fd",GradientType=1);
+}
+
+.electron{
+    background-color: gray;
+    border-radius: 100%;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    border: none;
+    user-select: none;
+}
+
+.proton{
+    background-color: gray;
+    border-radius: 100%;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    border: none;
+    user-select: none;
+}
+
+.Menu {
+    z-index: -100;
+    position: absolute;
+    left: 10px;
+    bottom: 20px;
+    width: 50px;
+    height: 40px;
+    background-color: brown;
+    clip-path: polygon(20% 100%, 25% 30%, 0 30%, 50% 0, 100% 30%, 75% 30%, 80% 100%);
+}
+
+.sub{
+    z-index: -99;
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+    position: absolute;
+    display: flex;
+    bottom: 0px;
+    width: 100%;
+    height: 50px;
+    background-color: rgb(2, 2, 101);
+}
+
+
+
+.contenedorInput button {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 150px;
+    text-align: center;
+    height: 20px;
+    margin-top: 1em;
+    background-color: #333;
+    color: white;
+    border: none; 
+    cursor: pointer;
+}   
+
+
+input{
+    border-style: dashed;
+    border-color: aqua;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    text-align: center;
+}
