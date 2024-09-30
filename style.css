@@ -58,6 +58,16 @@
     user-select: none;
 }
 
+.alfa{
+    background-color: gray;
+    border-radius: 100%;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    border: none;
+    user-select: none;
+}
+
 .Menu {
     z-index: -100;
     position: absolute;
@@ -83,7 +93,7 @@
 
 
 
-.contenedorInput button {
+#enviarID {
     position: absolute;
     display: flex;
     justify-content: center;
