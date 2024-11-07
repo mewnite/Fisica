@@ -1,293 +1,143 @@
-// Array para almacenar las posiciones de los elementos arrastrados.
-const posiciones = [];
+const canvas = document.getElementById('simulacionCanvas');
+const ctx = canvas.getContext('2d');
+canvas.width = 800;
+canvas.height = 400;
 
-// Contadores para los electrones y protones clonados.
-let iterationsE = 0;
-let iterationsP = 0;
+// Variables iniciales
+let x = canvas.width / 2;
+let y = canvas.height / 2;
+let velocidad = 0;
+let aceleracion = 1;
+let carga = 'electron';
+let campoDireccion = 'derecha';
+let campoCarga = 'positiva';
+let tiempo = 0;
+let moviendo = false;
 
-// Array para almacenar los inputs creados.
-let inputsCreados = [];
+function preDibujarSimulacion() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    x = canvas.width / 2;
+    y = canvas.height / 2;
 
-// Obtener el contenedor donde aparecerán los inputs
-const contenedorInputs = document.getElementById("contenedorInputs");
+    // Dibujar la partícula en la posición inicial
+    ctx.beginPath();
+    ctx.arc(x, y, 10, 0, Math.PI * 2);
+    ctx.fillStyle = carga === 'electron' ? 'red' : 'blue';
+    ctx.fill();
 
-// Función principal que habilita el arrastre y clonado de un elemento.
-function enableDragAndClone(element) {
-  element.addEventListener("mousedown", (event) => {
-    let targetElement = element;
+    // Dibujar líneas de campo eléctrico con flechas
+    dibujarCampoElectrico(campoDireccion, campoCarga);
+}
 
-    // Si el elemento tiene la clase 'original', lo clonamos.
-    if (element.classList.contains("original")) {
-      targetElement = cloneElement(element); // Clonamos el elemento.
-      document.body.appendChild(targetElement); // Añadimos el clon al documento.
-      enableDrag(targetElement); // Habilitamos el arrastre para el clon.
+function iniciarSimulacion() {
+    velocidad = parseFloat(document.getElementById('velocidad').value);
+    aceleracion = parseFloat(document.getElementById('aceleracion').value);
+    carga = document.getElementById('carga').value;
+    campoDireccion = document.getElementById('direccion-campo').value;
+    campoCarga = document.getElementById('carga-campo').value;
+
+    tiempo = 0;
+    moviendo = true;
+    document.getElementById('resultado').innerHTML = ''; // Limpiar resultado anterior
+    requestAnimationFrame(actualizarSimulacion);
+}
+
+function pausarSimulacion() {
+    moviendo = false;
+}
+
+function actualizarSimulacion() {
+    if (moviendo) {
+        tiempo += 0.1; // Incrementar tiempo en intervalos pequeños
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Calcular nueva posición aplicando MRUA: posición = posición_inicial + velocidad_inicial * tiempo + 0.5 * aceleración * tiempo^2
+        let desplazamiento = velocidad * tiempo + 0.5 * aceleracion * Math.pow(tiempo, 2);
+        let fuerzaCampo = (campoCarga === 'positiva' ? 1 : -1) * (carga === 'proton' ? -1 : 1);
+
+        // Actualizar posición según la dirección del campo
+        if (campoDireccion === 'derecha') {
+            x += desplazamiento * fuerzaCampo;
+        } else if (campoDireccion === 'izquierda') {
+            x -= desplazamiento * fuerzaCampo;
+        } else if (campoDireccion === 'arriba') {
+            y -= desplazamiento * fuerzaCampo;
+        } else if (campoDireccion === 'abajo') {
+            y += desplazamiento * fuerzaCampo;
+        }
+
+        // Dibujar la partícula
+        ctx.beginPath();
+        ctx.arc(x, y, 10, 0, Math.PI * 2);
+        ctx.fillStyle = carga === 'electron' ? 'red' : 'blue';
+        ctx.fill();
+
+        // Dibujar líneas de campo eléctrico con flechas
+        dibujarCampoElectrico(campoDireccion, campoCarga);
+
+        // Verificar límites
+        if (x > canvas.width - 20 || x < 20 || y > canvas.height - 20 || y < 20) {
+            moviendo = false;
+            document.getElementById('resultado').innerHTML = `Simulación terminada. La partícula recorrió una distancia de ${Math.abs(desplazamiento).toFixed(2)} px en ${(tiempo).toFixed(2)} s.`;
+            preDibujarSimulacion(); // Reiniciar la simulación en la posición central
+        } else {
+            requestAnimationFrame(actualizarSimulacion);
+        }
     }
-
-    // Preparamos el elemento para el arrastre.
-    prepareElementForDragging(targetElement);
-
-    // Iniciamos el arrastre del elemento.
-    startDragging(targetElement, event);
-  });
-
-  // Desactivar el comportamiento de arrastre por defecto.
-  element.ondragstart = () => false;
 }
 
-function enableDrag(element) {
-  element.addEventListener("mousedown", (event) => {
-    prepareElementForDragging(element); // Preparamos el elemento.
-    startDragging(element, event); // Iniciamos el arrastre.
-  });
-}
+function dibujarCampoElectrico(direccion, cargaCampo) {
+    ctx.strokeStyle = cargaCampo === 'positiva' ? 'lightgreen' : 'red';
+    ctx.lineWidth = 2;
 
-//prepara a el elemento para ser arrastrado con un pequeño delay
-function prepareElementForDragging(element) {
-  element.style.position = "absolute";
-  element.style.zIndex = 1000;
-  document.body.append(element);
-}
+    // Dibujar líneas y flechas en la dirección del campo
+    const lineSpacing = 40;
+    const arrowSpacing = 80;
 
-// Función para clonar el elemento original.
-function cloneElement(element) {
-  const clonedElement = element.cloneNode(true); // Clonamos el nodo completo.
-  clonedElement.classList.remove("original"); // Eliminamos la clase 'original' del clon.
-  clonedElement.classList.add("p"); // Añadimos una nueva clase para el clon.
-  clonedElement.style.position = "absolute"; // Posicionamos el clon de forma absoluta.
-  clonedElement.style.zIndex = 1000; // Aseguramos que el clon esté en el frente.
-
-  // Asignamos un ID único para cada clon de electrón o protón.
-  if (element.id === "electronO") {
-    clonedElement.id = `eq${iterationsE++}`; // Incrementamos el contador de electrones.
-  } else if (element.id === "protonO") {
-    clonedElement.id = `pq${iterationsP++}`; // Incrementamos el contador de protones.
-  }
-
-  const tooltip = document.getElementById("tooltip");
-
-  clonedElement.addEventListener("mouseover", () => {
-      const id = clonedElement.id;
-      let carga;
-      if (clonedElement.classList.contains("electron")) {
-          carga = "-1,6x10^-19 C"; // Carga del electrón
-      } else if (clonedElement.classList.contains("proton")) {
-          carga = "+1,6x10^-19 C"; // Carga del protón
-      }
-
-      tooltip.innerHTML = `ID: ${id}, Carga: ${carga}`;
-      tooltip.style.display = "block";
-  });
-
-  clonedElement.addEventListener("mouseout", () => {
-    tooltip.style.display = "none";
-});
-  // Manejamos el clic en el clon.
-  handleDragAndClick(clonedElement);
-
-  // Añadimos un nuevo input para el clon creado.
-  addOrUpdateInput(clonedElement.id);
-
-  return clonedElement; // Retornamos el clon.
-}
-
-// Función para manejar el arrastre y clic del elemento.
-function handleDragAndClick(element) {
-  let isDragging = false; // Variable para rastrear si estamos arrastrando.
-  let startX, startY, initialX, initialY;
-
-  // Cuando hacemos clic (mousedown), comenzamos a rastrear la posición.
-  element.addEventListener("mousedown", (event) => {
-    isDragging = false; // Inicialmente no estamos arrastrando.
-    startX = event.clientX;
-    startY = event.clientY;
-    initialX = element.offsetLeft;
-    initialY = element.offsetTop;
-
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseup", onMouseUp);
-  });
-
-  function onMouseMove(event) {
-    const dx = event.clientX - startX;
-    const dy = event.clientY - startY;
-
-    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
-      isDragging = true; // Si el movimiento es significativo, estamos arrastrando.
-    }
-
-    if (isDragging) {
-      element.style.left = `${initialX + dx}px`;
-      element.style.top = `${initialY + dy}px`;
-    }
-  }
-
-  function onMouseUp() {
-    document.removeEventListener("mousemove", onMouseMove);
-    document.removeEventListener("mouseup", onMouseUp);
-
-    if (!isDragging) {
-      addOrUpdateInput(element.id); // Añadimos o actualizamos el input con el ID.
+    if (direccion === 'derecha' || direccion === 'izquierda') {
+        for (let i = 0; i < canvas.height; i += lineSpacing) {
+            for (let j = 0; j < canvas.width; j += arrowSpacing) {
+                ctx.beginPath();
+                ctx.moveTo(j, i);
+                ctx.lineTo(j + (direccion === 'derecha' ? 60 : -60), i);
+                ctx.stroke();
+                dibujarFlecha(j + (direccion === 'derecha' ? 50 : -50), i, direccion);
+            }
+        }
     } else {
-      updateElementPosition(element); // Actualizamos la posición en el array de posiciones.
+        for (let i = 0; i < canvas.width; i += lineSpacing) {
+            for (let j = 0; j < canvas.height; j += arrowSpacing) {
+                ctx.beginPath();
+                ctx.moveTo(i, j);
+                ctx.lineTo(i, j + (direccion === 'abajo' ? 60 : -60));
+                ctx.stroke();
+                dibujarFlecha(i, j + (direccion === 'abajo' ? 50 : -50), direccion);
+            }
+        }
     }
-  }
 }
 
-// Función para añadir o actualizar los inputs.
-function addOrUpdateInput(id) {
-  // Solo creamos hasta un máximo de 5 inputs.
-  if (inputsCreados.length < 5) {
-    // Creamos un nuevo input si no se han creado suficientes.
-    const input = document.createElement("input");
-    input.type = "text";
-    input.value = id;
-    inputsCreados.push(input);
-    contenedorInputs.appendChild(input); // Añadimos el input al contenedor inferior.
-  }
-}
-
-// Función para actualizar la posición del elemento en el array 'posiciones'.
-function updateElementPosition(element) {
-  const { left, top } = element.getBoundingClientRect(); // Obtenemos las nuevas coordenadas del elemento.
-  const { id } = element;
-
-  // Buscamos si el elemento ya está en el array 'posiciones' por su ID.
-  const index = posiciones.findIndex((pos) => pos.id === id);
-  if (index !== -1) {
-    posiciones[index] = { id, left, top };
-  } else {
-    posiciones.push({ id, left, top });
-  }
-
-  // Debug: Mostrar las posiciones en consola.
-  for (let i = 0; i < posiciones.length; i++) {
-    console.log(posiciones[i]);
-  }
-}
-
-
-// Función para iniciar el arrastre del elemento
-function startDragging(targetElement, event) {
-    function moveAt(pageX, pageY) {
-        targetElement.style.left = pageX - targetElement.offsetWidth / 2 + "px";
-        targetElement.style.top = pageY - targetElement.offsetHeight / 2 + "px";
+function dibujarFlecha(x, y, direccion) {
+    ctx.beginPath();
+    if (direccion === 'derecha') {
+        ctx.moveTo(x, y - 5);
+        ctx.lineTo(x + 10, y);
+        ctx.lineTo(x, y + 5);
+    } else if (direccion === 'izquierda') {
+        ctx.moveTo(x, y - 5);
+        ctx.lineTo(x - 10, y);
+        ctx.lineTo(x, y + 5);
+    } else if (direccion === 'abajo') {
+        ctx.moveTo(x - 5, y);
+        ctx.lineTo(x, y + 10);
+        ctx.lineTo(x + 5, y);
+    } else if (direccion === 'arriba') {
+        ctx.moveTo(x - 5, y);
+        ctx.lineTo(x, y - 10);
+        ctx.lineTo(x + 5, y);
     }
-
-    moveAt(event.pageX, event.pageY);
-
-    const onMouseMove = (event) => moveAt(event.pageX, event.pageY);
-
-    document.addEventListener("mousemove", onMouseMove);
-
-    targetElement.onmouseup = () => {
-
-        updateElementPosition(targetElement);
-        document.removeEventListener("mousemove", onMouseMove);
-        targetElement.onmouseup = null;
-    };
+    ctx.fill();
 }
 
-// Habilitamos el arrastre y clonado de los elementos originales.
-const electron = document.getElementById("electronO");
-const proton = document.getElementById("protonO");
-const alfa = document.getElementById("alfaO");
-
-electron.classList.add("original");
-proton.classList.add("original");
-alfa.classList.add("original");
-
-enableDragAndClone(electron);
-enableDragAndClone(proton);
-enableDragAndClone(alfa);
-
-// Función para obtener los valores de los inputs.
-function getValue() {
-  return inputsCreados.map((input) => input.value);
-}
-
-// Función para calcular la distancia entre elementos id1 e id2 (hay que hacerlo escalable para varios objetos).
-function calcularDistancia(id1, id2) {
-  // Encontrar las posiciones de los elementos en el array posiciones.
-  const elemento1 = posiciones.find((pos) => pos.id === id1);
-  const elemento2 = posiciones.find((pos) => pos.id === id2);
-
-  if (!elemento1 || !elemento2) {
-    console.error("No se encontraron las posiciones de uno o ambos elementos.");
-    return 0;
-  }
-
-  // Calcular la distancia usando la fórmula de distancia euclidiana.
-  const distancia = Math.sqrt(
-    Math.pow(elemento2.left - elemento1.left, 2) +
-      Math.pow(elemento2.top - elemento1.top, 2)
-  );
-
-  // Convertir la distancia a cm y asegurar que solo haya 2 decimales.
-  let cm = (distancia * 0.026458).toFixed(2);
-
-  // Convertir los cm a metros.
-  let m = (cm / 100).toFixed(2);
-
-  return m;
-}
-
-// Botón para enviar los datos y calcular la distancia.
-document.getElementById("enviarID").addEventListener("click", (event) => {
-  event.preventDefault();
-  html2canvas(document.body).then(function(canvas) {
-    // Convertir el canvas a una imagen en formato base64
-    var imgData = canvas.toDataURL('image/png');
-    
-    // Mostrar la imagen en un SweetAlert2
-    Swal.fire({
-        title: 'Captura de Pantalla',
-        text: 'Aquí está tu captura de pantalla:',
-        imageUrl: imgData, // Usamos la imagen generada por html2canvas
-        imageAlt: 'Captura de pantalla',
-        confirmButtonText: 'Cerrar'
-    });
-}).catch(function(error) {
-    console.error('Error al capturar la pantalla:', error);
-});
-  // Llamar a la función getValue y obtener los valores.
-  const ids = getValue();
-
-  // Calcular la distancia entre los dos elementos con las IDs obtenidas.
-  const distancia = calcularDistancia(ids[0], ids[1]);
-
-  alert(`La distancia entre ${ids[0]} y ${ids[1]} es: ${distancia} m`);
-  let campo = 9.0e9 * 1.6e10 - 19;
-  let resultado = campo / m;
-  console.log(resultado);
-});
-
-
-let menu = document.getElementById("Menu");
-let sub = document.getElementById("sub");
-
-function animateMenu() {
-    menu.removeEventListener("mouseover", animateMenu); // Eliminamos el evento para evitar múltiples animaciones.
-  
-    // Animación para el submenú.
-    sub.animate([{ bottom: "0px" }, { bottom: "50px" }], {
-      duration: 2000,
-      easing: "ease",
-      fill: "forwards",
-    });
-  
-    // Animación para el menú principal.
-    menu.animate([{ bottom: "20px" }, { bottom: "100px" }], {
-      duration: 2000,
-      easing: "ease",
-      fill: "forwards",
-    });
-  
-    //Restauramos el evento de 'mouseover' después de la animación.
-    setTimeout(() => {
-      menu.addEventListener("mouseover", animateMenu);
-    }, 2000);
-  }
-  
-  // Añadimos el evento 'mouseover' al menú para iniciar la animación.
-  menu.addEventListener("mouseover", animateMenu);
-
+// Predibujar la simulación al cargar la página
+preDibujarSimulacion();

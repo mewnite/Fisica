@@ -1,29 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <title>Electrones!</title>
+    <title>Simulación de MRU y MRUA</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="tooltip" style="position: absolute; top: 10px; left: 10px; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 5px; border-radius: 5px; display: none;"></div>
-   <div id="contenedorSuperior" class="contenedorSuperior"></div>
-   <div id="contenedorInf" class="contenedorInf">
-    <div id="contenedorInputs" style="display: flex; flex-direction: row;"></div>
-        <button class="enviarID" id="enviarID">Enviar</button>
+    <div class="container">
+        <h1>Simulación de MRU y MRUA</h1>
+        <div class="controls">
+            <label for="aceleracion">Aceleración: </label>
+            <input type="number" id="aceleracion" value="1">
+
+            <label for="velocidad">Velocidad Inicial: </label>
+            <input type="number" id="velocidad" value="2">
+
+            <label for="carga">Carga: </label>
+            <select id="carga">
+                <option value="electron">Electrón</option>
+                <option value="proton">Protón</option>
+            </select>
+
+            <label for="direccion-campo">Dirección del Campo Eléctrico: </label>
+            <select id="direccion-campo">
+                <option value="derecha">Derecha</option>
+                <option value="izquierda">Izquierda</option>
+                <option value="arriba">Arriba</option>
+                <option value="abajo">Abajo</option>
+            </select>
+
+            <label for="carga-campo">Carga del Campo: </label>
+            <select id="carga-campo">
+                <option value="positiva">Positiva</option>
+                <option value="negativa">Negativa</option>
+            </select>
+
+            <button onclick="iniciarSimulacion()">Iniciar Simulación</button>
+            <button onclick="pausarSimulacion()">Pausar Simulación</button>
+        </div>
+
+        <div class="simulacion">
+            <canvas id="simulacionCanvas"></canvas>
+        </div>
+
+        <div id="resultado"></div>
     </div>
-    <div id="Menu" class="Menu"></div>
-   </div>
-   <div id="sub" class="sub">
-    <button type="button" id="electronO" class="electron">-</button>
-    <div class="info" id="info"></div>
-    <button type="button" id="alfaO", class="alfa">α</button>
-    <button type="button" id="protonO" class="proton">+</button>
-   </div>
+
+    <script src="script.js"></script>
 </body>
-<script src="./LogClones.js"></script>
-<script src="./animaciones.js"></script>
 </html>
