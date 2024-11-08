@@ -42,9 +42,6 @@ function iniciarSimulacion() {
     requestAnimationFrame(actualizarSimulacion);
 }
 
-function pausarSimulacion() {
-    moviendo = false;
-}
 
 function actualizarSimulacion() {
     if (moviendo) {
