@@ -3,6 +3,8 @@ const ctx = canvas.getContext('2d');
 canvas.width = 800;
 canvas.height = 400;
 
+function CalcularSinCanva(val1, val2) {}
+
 // Variables iniciales
 let x = canvas.width / 2;
 let y = canvas.height / 2;
@@ -10,7 +12,6 @@ let velocidad = 0;
 let aceleracion = 1;
 let carga = 'electron';
 let campoDireccion = 'derecha';
-let campoCarga = 'positiva';
 let tiempo = 0;
 let moviendo = false;
 
@@ -26,7 +27,7 @@ function preDibujarSimulacion() {
     ctx.fill();
 
     // Dibujar líneas de campo eléctrico con flechas
-    dibujarCampoElectrico(campoDireccion, campoCarga);
+    dibujarCampoElectrico(campoDireccion);
 }
 
 function iniciarSimulacion() {
@@ -34,14 +35,12 @@ function iniciarSimulacion() {
     aceleracion = parseFloat(document.getElementById('aceleracion').value);
     carga = document.getElementById('carga').value;
     campoDireccion = document.getElementById('direccion-campo').value;
-    campoCarga = document.getElementById('carga-campo').value;
 
     tiempo = 0;
     moviendo = true;
     document.getElementById('resultado').innerHTML = ''; // Limpiar resultado anterior
     requestAnimationFrame(actualizarSimulacion);
 }
-
 
 function actualizarSimulacion() {
     if (moviendo) {
@@ -50,17 +49,16 @@ function actualizarSimulacion() {
 
         // Calcular nueva posición aplicando MRUA: posición = posición_inicial + velocidad_inicial * tiempo + 0.5 * aceleración * tiempo^2
         let desplazamiento = velocidad * tiempo + 0.5 * aceleracion * Math.pow(tiempo, 2);
-        let fuerzaCampo = (campoCarga === 'positiva' ? 1 : -1) * (carga === 'proton' ? -1 : 1);
 
         // Actualizar posición según la dirección del campo
         if (campoDireccion === 'derecha') {
-            x += desplazamiento * fuerzaCampo;
+            x += desplazamiento;
         } else if (campoDireccion === 'izquierda') {
-            x -= desplazamiento * fuerzaCampo;
+            x -= desplazamiento;
         } else if (campoDireccion === 'arriba') {
-            y -= desplazamiento * fuerzaCampo;
+            y -= desplazamiento;
         } else if (campoDireccion === 'abajo') {
-            y += desplazamiento * fuerzaCampo;
+            y += desplazamiento;
         }
 
         // Dibujar la partícula
@@ -70,7 +68,7 @@ function actualizarSimulacion() {
         ctx.fill();
 
         // Dibujar líneas de campo eléctrico con flechas
-        dibujarCampoElectrico(campoDireccion, campoCarga);
+        dibujarCampoElectrico(campoDireccion);
 
         // Verificar límites
         if (x > canvas.width - 20 || x < 20 || y > canvas.height - 20 || y < 20) {
@@ -83,8 +81,8 @@ function actualizarSimulacion() {
     }
 }
 
-function dibujarCampoElectrico(direccion, cargaCampo) {
-    ctx.strokeStyle = cargaCampo === 'positiva' ? 'lightgreen' : 'red';
+function dibujarCampoElectrico(direccion) {
+    ctx.strokeStyle = 'lightgreen';
     ctx.lineWidth = 2;
 
     // Dibujar líneas y flechas en la dirección del campo
