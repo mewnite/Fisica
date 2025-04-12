@@ -3,7 +3,9 @@ const ctx = canvas.getContext('2d');
 canvas.width = 800;
 canvas.height = 400;
 
-function CalcularSinCanva(val1, val2) {}
+function CalcularSinCanva(val1, val2) {
+    return val1 / val2; 
+}
 
 // Variables iniciales
 let x = canvas.width / 2;
