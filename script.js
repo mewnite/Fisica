@@ -3,19 +3,67 @@ const ctx = canvas.getContext('2d');
 canvas.width = 800;
 canvas.height = 400;
 
-function CalcularSinCanva(val1, val2) {
-    return val1 / val2; 
+function CalcularSinCanva(vel, temp) {
+   return vel / temp; 
+}
+
+function getTime(){
+    let tiempo = document.getElementById('tiempo').value;
+    return tiempo;
+}
+
+function getVel(){
+    let velocidad = document.getElementById('velocidad').value;
+    return velocidad;
+}
+
+function veriFicarTipo(){
+    let MtoKm = document.getElementById("medida").value;
+    let Hms = document.getElementById("tmp").value
+    let medidas; 
+    if(MtoKm == "km" && Hms == "horas"){
+      medidas = true;
+    }else if(MtoKm == "m" && Hms == "segundos"){
+       medidas = true;
+    }else{
+       medidas = false; 
+    }
+    return medidas; 
+}
+
+function almacenarMedidas(){
+    let MtoKm = document.getElementById("medida").value;
+    let Hms = document.getElementById("tmp").value
+    let medidas; 
+    if(MtoKm == "km" && Hms == "horas"){
+      medidas = "km/h";
+    }else if(MtoKm == "m" && Hms == "segundos"){
+       medidas = "m/s";
+    }
+    return medidas; 
+}
+
+function calcular() {
+    if (veriFicarTipo() === true) {
+        let vel = getVel();
+        let tiempo = getTime();
+        resultado = CalcularSinCanva(vel, tiempo);
+        resultado = `La distancia recorrida es: ${resultado} ${almacenarMedidas()}`;
+    } else {
+        resultado = "Error, verifica las unidades de medida seleccionadas";
+    }
+    return resultado;
 }
 
 // Variables iniciales
 let x = canvas.width / 2;
 let y = canvas.height / 2;
 let velocidad = 0;
-let aceleracion = 1;
 let carga = 'electron';
 let campoDireccion = 'derecha';
 let tiempo = 0;
 let moviendo = false;
+let aceleracion = 0; 
 
 function preDibujarSimulacion() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -28,14 +76,12 @@ function preDibujarSimulacion() {
     ctx.fillStyle = carga === 'electron' ? 'red' : 'blue';
     ctx.fill();
 
-    // Dibujar líneas de campo eléctrico con flechas
     dibujarCampoElectrico(campoDireccion);
 }
 
 function iniciarSimulacion() {
+    
     velocidad = parseFloat(document.getElementById('velocidad').value);
-    aceleracion = parseFloat(document.getElementById('aceleracion').value);
-    carga = document.getElementById('carga').value;
     campoDireccion = document.getElementById('direccion-campo').value;
 
     tiempo = 0;
@@ -66,7 +112,6 @@ function actualizarSimulacion() {
         // Dibujar la partícula
         ctx.beginPath();
         ctx.arc(x, y, 10, 0, Math.PI * 2);
-        ctx.fillStyle = carga === 'electron' ? 'red' : 'blue';
         ctx.fill();
 
         // Dibujar líneas de campo eléctrico con flechas
@@ -75,7 +120,7 @@ function actualizarSimulacion() {
         // Verificar límites
         if (x > canvas.width - 20 || x < 20 || y > canvas.height - 20 || y < 20) {
             moviendo = false;
-            document.getElementById('resultado').innerHTML = `Simulación terminada. La partícula recorrió una distancia de ${Math.abs(desplazamiento).toFixed(2)} px en ${(tiempo).toFixed(2)} s.`;
+            document.getElementById('resultado').innerHTML = calcular(); 
             preDibujarSimulacion(); // Reiniciar la simulación en la posición central
         } else {
             requestAnimationFrame(actualizarSimulacion);

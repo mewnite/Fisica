@@ -64,34 +64,39 @@ h1 {
 }
 
 .controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: space-between;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    gap: 20px; 
+    justify-content: center;
 }
 
-.control-item {
+.control-item,
+fieldset {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    flex: 1 1 calc(50% - 15px);
-    min-width: 250px;
+    flex-direction: column; 
+    gap: 10px; 
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .control-item label {
-    flex: 1;
-    text-align: right;
-    margin-right: 10px;
+    font-size: 0.9em;
+    color: #333;
+    margin-bottom: 5px; 
 }
 
 .control-item input,
 .control-item select {
-    flex: 2;
+    width: 100%; 
     padding: 8px;
     font-size: 1em;
     border: 1px solid #ccc;
     border-radius: 6px;
+    background-color: transparent;
+    color: #333;
 }
 
 .controls label {
@@ -114,7 +119,6 @@ h1 {
 button {
     width: 100%;
     margin-top: 20px;
-    align-self: flex-end;
     padding: 12px;
     font-size: 1em;
     border: none;
@@ -171,6 +175,53 @@ canvas {
 
 .juego:hover{
   background-color: #357ABD;
+}
+
+fieldset {
+    display: flex;
+    flex-direction: column; 
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1); 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+legend {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #4A90E2;
+    margin-bottom: 10px;
+    text-align: center; 
+}
+
+fieldset .control-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    gap: 10px;
+}
+
+fieldset input,
+fieldset select {
+    width: 100%; 
+    padding: 8px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: transparent;
+    color: #333;
+}
+
+fieldset select {
+    
+}
+
+fieldset label {
+    font-size: 0.9em;
+    color: #333;
+    margin-bottom: 5px; 
 }
 
 @media (max-width: 600px) {
