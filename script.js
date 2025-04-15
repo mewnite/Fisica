@@ -121,6 +121,12 @@ function actualizarSimulacion() {
         if (x > canvas.width - 20 || x < 20 || y > canvas.height - 20 || y < 20) {
             moviendo = false;
             document.getElementById('resultado').innerHTML = calcular(); 
+            if(!document.getElementById("btnGrafica")){
+                let mostrar = document.getElementById("contenedor").appendChild(document.createElement("button"))
+                mostrar.innerHTML = "Mostrar gráfica";
+                mostrar.id = "btnGrafica";
+            }
+              
             preDibujarSimulacion(); // Reiniciar la simulación en la posición central
         } else {
             requestAnimationFrame(actualizarSimulacion);

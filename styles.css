@@ -157,10 +157,12 @@ canvas {
 }
 
 #resultado {
+    font-family: "New Century Schoolbook, TeX Gyre Schola, serif";
+    font-weight: bold;
     margin-top: 20px;
     text-align: center;
-    font-size: 1.2em;
-    color: #D9534F;
+    font-size: 1.5em;
+    color: rgb(45, 45, 45);
 }
 
 .juego{
@@ -171,11 +173,19 @@ canvas {
   height: 50px;
   background-color: #4A90E2;
   border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 1.5em;
+  font-weight: bold;
 }
 
 .juego:hover{
   background-color: #357ABD;
+  color:#333;
 }
+
 
 fieldset {
     display: flex;
