@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulación de MRU</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="./redirect.js" defer></script>
+</head>
+<body>
+    <div class="container" id="contenedor">
+        <h1>Simulación de MRU</h1>
+        <div class="controls">
+
+            <div class="control-item">
+             <fieldset>
+                <legend>Velocidad</legend>
+                <input type="number" id="velocidad" value="0" min="0">
+                <select name="medida" id="medida">
+                    <option value="km">km</option>
+                    <option value="m">m</option>
+                </select>
+             </fieldset>
+            </div>
+
+            <div class="control-item">
+                <fieldset>
+                    <legend>Tiempo</legend>
+                    <input type="number" id="tiempo" value="0" min="0">
+                    <select name="tiempo" id="tmp">
+                    <option name="horas" id="hs">horas</option>
+                    <option name="minutos" id="mins">minutos</option>
+                    <option name="segundos" id="seg">segundos</option>
+                </select>
+                </fieldset>
+            </div>
+            <div class="control-item">
+                <label for="direccion-campo">Dirección del movimiento: </label>
+                <select id="direccion-campo">
+                    <option value="derecha">Derecha</option>
+                    <option value="izquierda">Izquierda</option>
+                    <option value="arriba">Arriba</option>
+                    <option value="abajo">Abajo</option>
+                </select>
+            </div>
+        </div>
+        <div id="resultado"></div>
+        <button onclick="iniciarSimulacion()">Iniciar Simulación</button>
+
+        <div class="simulacion">
+            <canvas id="simulacionCanvas"></canvas>
+        </div>
+    </div>
+
+    <div class="juego" id="juego"><i class="fa-solid fa-gamepad"></i></div>
+
+    <script src="script.js"></script>
+    <script src="https://kit.fontawesome.com/927dd3c386.js" crossorigin="anonymous"></script>   
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="logicaGrafica.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>
