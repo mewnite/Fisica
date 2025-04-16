@@ -1,22 +1,113 @@
-* {
-    box-sizing: border-box;
+body, html {
+    width: 100%;
     margin: 0;
     padding: 0;
 }
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: rgb(159, 166, 219);
-    color: #333;
-    line-height: 1.6;
-    height: 100%;
-    margin: 0;
+    background-image: url('./fondo.jpg'); /* Asegúrate de usar la ruta correcta */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
 }
 
-.caja{
+.caja {
+    min-width: 700px;
+    width: 70%;
+    height: auto;
     position: relative;
     border: 2px solid rgba(0, 0, 0, 0.696);
     margin: 20px auto;
     padding: 20px;
     border-radius: 8px;
     background-color: cornsilk;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 50px;
+}
+
+.contenedor-palabra {
+    display: flex;
+    flex-direction: row; /* Cambiar a fila */
+    align-items: center; /* Alinear verticalmente */
+    justify-content: center; /* Centrar horizontalmente */
+    gap: 20px; /* Espacio entre inputs y botón */
+}
+
+.inputs-container {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.letra-input {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    font-size: 1.2em;
+    margin: 0 5px;
+}
+
+.boton-validar {
+    margin-top: 0;
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #4A90E2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.boton-validar:hover {
+    background-color: #357ABD;
+}
+#puzzel {
+	width:100%;
+	margin: 0;
+	padding: 0;
+	border-collapse: collapse;
+	border: 1px solid black;
+}
+#cross{
+	text-align: center;
+	width:30px;
+	height:30px;
+	margin: 0;
+	padding: 0;
+	border-collapse: collapse;
+	border: 1px solid white;
+}
+
+
+#buttons{
+	width:30%;
+	float: right;
+
+}
+tr{
+	margin: 0;
+	padding: 0;
+	border-collapse: collapse;
+}
+#leftBox{
+	float: left;
+	width:50%
+	height: 50%;
+}
+#rightBox{
+	float: left;
+}
+#butt{
+	width: 100px;
+	padding:20px;
+}
+table{
+	padding:20px;
 }

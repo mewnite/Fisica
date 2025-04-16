@@ -25,7 +25,7 @@
 
             <div class="control-item">
                 <fieldset>
-                    <legend>Tiempo</legend>
+                    <legend id="auto">Tiempo</legend>
                     <input type="number" id="tiempo" value="0" min="0">
                     <select name="tiempo" id="tmp">
                     <option name="horas" id="hs">horas</option>
@@ -39,13 +39,13 @@
                 <select id="direccion-campo">
                     <option value="derecha">Derecha</option>
                     <option value="izquierda">Izquierda</option>
-                    <option value="arriba">Arriba</option>
-                    <option value="abajo">Abajo</option>
                 </select>
             </div>
         </div>
         <div id="resultado"></div>
-        <button onclick="iniciarSimulacion()">Iniciar Simulación</button>
+        <button onclick="guardarDatos()">Guardar datos</button>
+        <button onclick="iniciarSimulacion()">Iniciar simulacion</button>
+
 
         <div class="simulacion">
             <canvas id="simulacionCanvas"></canvas>
