@@ -116,6 +116,13 @@ fieldset {
     background-color: #f9fafb;
 }
 
+.botones{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    justify-content: center;
+}
+
 button {
     width: 100%;
     margin-top: 20px;
@@ -224,8 +231,12 @@ fieldset select {
     color: #333;
 }
 
-fieldset select {
-    
+.borrar{
+    background-color: rgb(212, 5, 5);
+}
+
+.borrar:hover{
+    background-color: rgb(188, 4, 4);
 }
 
 fieldset label {

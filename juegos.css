@@ -4,6 +4,8 @@ body, html {
     padding: 0;
 }
 
+
+
 body {
     background-image: url('./fondo.jpg'); /* Asegúrate de usar la ruta correcta */
     background-repeat: no-repeat;
@@ -86,11 +88,6 @@ body {
 }
 
 
-#buttons{
-	width:30%;
-	float: right;
-
-}
 tr{
 	margin: 0;
 	padding: 0;

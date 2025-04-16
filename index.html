@@ -43,8 +43,11 @@
             </div>
         </div>
         <div id="resultado"></div>
-        <button onclick="guardarDatos()">Guardar datos</button>
-        <button onclick="iniciarSimulacion()">Iniciar simulacion</button>
+        <div class="botones" id="botones">
+            <button onclick="guardarDatos()">Guardar datos</button>
+        <button onclick="iniciarSimulacion()" hidden id="iniciar">Iniciar simulacion</button>
+        </div>
+        <button class="borrar" onclick="borrar()">Borrar datos</button>
 
 
         <div class="simulacion">
