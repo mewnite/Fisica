@@ -8,15 +8,18 @@ function CalcularSinCanva(vel, temp) {
 }
 
 function getTime() {
-  let tiempo = document.getElementById("tiempo").value;
-  return tiempo;
+    let datosAuto = localStorage.getItem(`auto${1}`);
+    datosAuto = JSON.parse(datosAuto)
+    return datosAuto.tiempo
 }
+
 
 window.onload = function () {
     localStorage.removeItem("contadorAutos");
     localStorage.removeItem("auto1");
     localStorage.removeItem("auto2");
     document.getElementById("iniciar").hidden = true; 
+    document.getElementById("borrar").hidden = true;
     document.getElementById("iniciar").addEventListener("click", iniciarSimulacion);
 }
 
@@ -37,12 +40,18 @@ function borrar(){
     localStorage.removeItem("auto1");
     localStorage.removeItem("auto2");
     document.getElementById("iniciar").hidden = true; 
+    document.getElementById("borrar").hidden = true;
     document.getElementById("iniciar").addEventListener("click", iniciarSimulacion);
 }
 
 function getVel() {
-  let velocidad = document.getElementById("velocidad").value;
-  return velocidad;
+  let datosAuto = localStorage.getItem(`auto${1}`);
+  datosAuto = JSON.parse(datosAuto)
+  let vel; 
+  if(datosAuto){
+    vel = datosAuto.velocidad
+  }
+  return vel; 
 }
 
 function veriFicarTipo() {
@@ -75,11 +84,13 @@ function calcular() {
   if (veriFicarTipo() === true) {
     let vel = getVel();
     let tiempo = getTime();
-    resultado = CalcularSinCanva(vel, tiempo);
-    resultado = `La distancia recorrida es: ${resultado} ${almacenarMedidas()}`;
+    let res = CalcularSinCanva(vel, tiempo);
+
+    resultado = `La distancia recorrida es: ${res} ${almacenarMedidas()}`;
   } else {
     resultado = "Error, verifica las unidades de medida seleccionadas";
   }
+  console.log(resultado)
   return resultado;
 }
 
@@ -172,10 +183,16 @@ function guardarDatos() {
 
 async function actualizarValores() {
   let contador = parseInt(localStorage.getItem("contadorAutos")) || 0;
+  let color; 
+    if (contador === 1) {
+        color = "rosa"
+    }else if (contador === 2) {
+        color = "rojo"
+    }
   Swal.fire({
     icon: "success",
     title: `Datos del auto ${contador} enviados`,
-    text: `Se han enviado los datos del auto ${contador}`,
+    text: `Se han enviado los datos del auto ${color}`,
     confirmButtonText: "Aceptar",
     customClass: {
       popup: "rounded-xl shadow-lg",
@@ -186,6 +203,7 @@ async function actualizarValores() {
   });
   if(contador === 2) {
     document.getElementById("iniciar").hidden = false; 
+    document.getElementById("borrar").hidden  = false; 
   }
 }
 
