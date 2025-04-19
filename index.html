@@ -8,19 +8,32 @@
     <script src="./redirect.js" defer></script>
 </head>
 <body>
-    <div class="container" id="contenedor">
-        <h1>Simulación de MRU</h1>
-        <div class="controls">
-
-            <div class="control-item">
-             <fieldset>
+    <div class="container-p" id="contenedor">
+        <div class="bloq-explicador">
+            <h2>¿Cómo funciona el simulador?</h2>
+            <ul>
+                <li>Este simulador le permite experimentar con el <strong>Movimiento Rectilíneo Uniforse (MRU)</strong>, es decir, cuando un objeto se mueve a <strong>velocidad constante</strong> en línea recta. <br></li>
+                <li> Para comenzar, ingresa un valor en el campo de <strong>Velocidad</strong> y elige su unidad (por ejemplo, km/h o m/s). Esta será la rapidez con la que se moverá el objeto. </li>
+                <li>Luego, completa elvalor del <strong>Tiempo</strong> que durara el movimiento, y seleccioná la unidad correspondiente (horas, segundos, etc)</li>
+                <li>Elige la <strong>dirección</strong> en la que qerés que se desplace el objeto: derecha o izquierda</li>
+                <li>Presione el botón <strong>"Guardar datos</strong> para cargar sus valorws. Después, haga clic en <strong>"Iniciar simulación"</strong> para ver cómo se mueve el objeto en la animación de la derecha.</li>
+                <li>Puede probar distintos valores para observar cómo cambia la distancia recorrida. <br></li>
+                <li>Si quiere reiniciar todo, use el botón <strong>"Borrar datos"</strong> y comience una nueva simulación.</li>
+            </ul>
+        </div>
+        
+        <div class="bloq-simulador">
+            <h1>Simulación de MRU</h1>
+            <div class="controls">
+                <div class="control-item">
+            <fieldset>
                 <legend>Velocidad</legend>
                 <input type="number" id="velocidad" value="0" min="0">
                 <select name="medida" id="medida">
                     <option value="km">km</option>
                     <option value="m">m</option>
                 </select>
-             </fieldset>
+            </fieldset>
             </div>
 
             <div class="control-item">
@@ -42,19 +55,20 @@
                 </select>
             </div>
         </div>
+    
         <div id="resultado"></div>
         <div class="botones" id="botones">
             <button onclick="guardarDatos()">Guardar datos</button>
         <button onclick="iniciarSimulacion()" hidden id="iniciar">Iniciar simulacion</button>
         </div>
         <button class="borrar" id="borrar" hidden onclick="borrar()">Borrar datos</button>
-
+        </div>
 
         <div class="simulacion">
             <canvas id="simulacionCanvas"></canvas>
         </div>
+        </div>
     </div>
-
     <div class="juego" id="juego"><i class="fa-solid fa-gamepad"></i></div>
 
     <script src="script.js"></script>

@@ -1,10 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("click", (event) => {
         if (event.target && event.target.id === "btnGrafica") {
-            const velocidad = parseFloat(document.getElementById("velocidad").value) || 0;
-            const tiempo = parseFloat(document.getElementById("tiempo").value) || 0;
-            const unidadVelocidad = document.getElementById("medida").value;
-            const unidadTiempo = document.getElementById("tmp").value; 
+            let datosAuto = localStorage.getItem(`auto${1}`);
+            datosAuto = JSON.parse(datosAuto);
+            let velocidad = datosAuto.velocidad;
+            const tiempo = datosAuto.tiempo
+            const unidadVelocidad =datosAuto.medida;
+            const unidadTiempo = datosAuto.tmp; 
 
             if (tiempo <= 0 || velocidad <= 0) {
                 Swal.fire({

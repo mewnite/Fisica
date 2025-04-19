@@ -8,50 +8,55 @@ function CalcularSinCanva(vel, temp) {
 }
 
 function getTime() {
-    let datosAuto = localStorage.getItem(`auto${1}`);
-    datosAuto = JSON.parse(datosAuto)
-    return datosAuto.tiempo
+  let datosA1 = localStorage.getItem(`auto${1}`);
+  let datosA2 = localStorage.getItem(`auto${2}`)
+  datosA1 = JSON.parse(datosA1);
+  datosA2 = JSON.parse(datosA2)
+  return `${datosA1.tiempo},${datosA2.tiempo}`;
 }
 
-
+/*
 window.onload = function () {
-    localStorage.removeItem("contadorAutos");
-    localStorage.removeItem("auto1");
-    localStorage.removeItem("auto2");
-    document.getElementById("iniciar").hidden = true; 
-    document.getElementById("borrar").hidden = true;
-    document.getElementById("iniciar").addEventListener("click", iniciarSimulacion);
-}
+  localStorage.removeItem("contadorAutos");
+  localStorage.removeItem("auto1");
+  localStorage.removeItem("auto2");
+  document.getElementById("iniciar").hidden = true;
+  document.getElementById("borrar").hidden = true;
+  document.getElementById("iniciar").addEventListener("click", iniciarSimulacion);
+};
+*/
 
-function borrar(){
-    Swal.fire({
-        icon: "success",
-        title: `Logro`,
-        text: `Se han borrado los datos de la simulación`,
-        confirmButtonText: "Aceptar",
-        customClass: {
-          popup: "rounded-xl shadow-lg",
-          title: "text-lg font-bold text-gray-700",
-          confirmButton:
-            "bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md",
-        },
-      });
-    localStorage.removeItem("contadorAutos");
-    localStorage.removeItem("auto1");
-    localStorage.removeItem("auto2");
-    document.getElementById("iniciar").hidden = true; 
-    document.getElementById("borrar").hidden = true;
-    document.getElementById("iniciar").addEventListener("click", iniciarSimulacion);
+function borrar() {
+  Swal.fire({
+    icon: "success",
+    title: `Logro`,
+    text: `Se han borrado los datos de la simulación`,
+    confirmButtonText: "Aceptar",
+    customClass: {
+      popup: "rounded-xl shadow-lg",
+      title: "text-lg font-bold text-gray-700",
+      confirmButton:
+        "bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md",
+    },
+  });
+  localStorage.removeItem("contadorAutos");
+  localStorage.removeItem("auto1");
+  localStorage.removeItem("auto2");
+  document.getElementById("iniciar").hidden = true;
+  document.getElementById("borrar").hidden = true;
+  document.getElementById("iniciar").addEventListener("click", iniciarSimulacion);
 }
 
 function getVel() {
-  let datosAuto = localStorage.getItem(`auto${1}`);
-  datosAuto = JSON.parse(datosAuto)
-  let vel; 
-  if(datosAuto){
-    vel = datosAuto.velocidad
+  let datosA1 = localStorage.getItem(`auto${1}`);
+  let datosA2 = localStorage.getItem(`auto${2}`);
+  datosA1 = JSON.parse(datosA1);
+  datosA2 = JSON.parse(datosA2)
+  let vel;
+  if (datosA1) {
+    vel = `${datosA1.velocidad},${datosA2.velocidad}`;
   }
-  return vel; 
+  return vel;
 }
 
 function veriFicarTipo() {
@@ -68,9 +73,27 @@ function veriFicarTipo() {
   return medidas;
 }
 
+/*
+function getVel() {
+  let datosA1 = localStorage.getItem(`auto${1}`);
+  let datosA2 = localStorage.getItem(`auto${2}`);
+  datosA1 = JSON.parse(datosA1);
+  datosA2 = JSON.parse(datosA2)
+  let vel;
+  if (datosA1) {
+    vel = `${datosA1.velocidad},${datosA2.velocidad}`;
+  }
+  return vel;
+}
+*/
+
 function almacenarMedidas() {
-  let MtoKm = document.getElementById("medida").value;
-  let Hms = document.getElementById("tmp").value;
+  let MtoKm = localStorage.getItem(`auto${1}`)
+  MtoKm = JSON.parse(MtoKm);
+  MtoKm = MtoKm.medida
+  let Hms = localStorage.getItem(`auto${1}`)
+  Hms = JSON.parse(Hms);
+  Hms = Hms.tmp; 
   let medidas;
   if (MtoKm == "km" && Hms == "horas") {
     medidas = "km/h";
@@ -82,19 +105,21 @@ function almacenarMedidas() {
 
 function calcular() {
   if (veriFicarTipo() === true) {
-    let vel = getVel();
-    let tiempo = getTime();
-    let res = CalcularSinCanva(vel, tiempo);
-
-    resultado = `La distancia recorrida es: ${res} ${almacenarMedidas()}`;
+    let velocidades = getVel().split(",");
+    let tiempos = getTime().split(",")
+    let v1 = velocidades[0]
+    let v2 = velocidades[1]
+    let t1 = tiempos[0]
+    let t2 = tiempos[2]
+    let res = CalcularSinCanva(v1, t1);
+    let res2 = CalcularSinCanva(v2,t2)
+    resultado = `La distancia recorrida por el auto rosa es: ${res} ${almacenarMedidas()} y por el rojo ${res} ${almacenarMedidas()}`;
   } else {
     resultado = "Error, verifica las unidades de medida seleccionadas";
   }
-  console.log(resultado)
   return resultado;
 }
 
-// Variables iniciales
 let x1 = canvas.width / 2;
 let x2 = canvas.width / 2 + 100;
 let y = canvas.height / 2;
@@ -139,39 +164,45 @@ function dibujarAuto(x, y, color) {
 
 function guardarDatos() {
   let iteraciones = parseInt(localStorage.getItem("contadorAutos")) || 0;
-  if(document.getElementById("velocidad").value === "0" || document.getElementById("tiempo").value === "0"){
+  if (
+    document.getElementById("velocidad").value === "0" ||
+    document.getElementById("tiempo").value === "0"
+  ) {
     Swal.fire({
-        icon: "error",
-        title: `Error`,
-        text: `No puedes tener valores 0`,
-        confirmButtonText: "Aceptar",
-        customClass: {
-            popup: "rounded-xl shadow-lg",
-            title: "text-lg font-bold text-gray-700",
-            confirmButton:
-                "bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md",
-        },
+      icon: "error",
+      title: `Error`,
+      text: `No puedes tener valores 0`,
+      confirmButtonText: "Aceptar",
+      customClass: {
+        popup: "rounded-xl shadow-lg",
+        title: "text-lg font-bold text-gray-700",
+        confirmButton:
+          "bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md",
+      },
     });
-    return
+    return;
   }
-  if(iteraciones ===2){
+  if (iteraciones === 2) {
     Swal.fire({
-        icon: "error",
-        title: `Error`,
-        text: `No se pueden enviar más datos`,
-        confirmButtonText: "Aceptar",
-        customClass: {
-          popup: "rounded-xl shadow-lg",
-          title: "text-lg font-bold text-gray-700",
-          confirmButton:
-            "bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md",
-        },
-      });
-      return
+      icon: "error",
+      title: `Error`,
+      text: `No se pueden enviar más datos`,
+      confirmButtonText: "Aceptar",
+      customClass: {
+        popup: "rounded-xl shadow-lg",
+        title: "text-lg font-bold text-gray-700",
+        confirmButton:
+          "bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md",
+      },
+    });
+    return;
   }
   let datosAuto = {};
   document.querySelectorAll("input").forEach((input) => {
     datosAuto[input.id] = input.value;
+  });
+  document.querySelectorAll("select").forEach((select) => {
+    datosAuto[select.id] = select.value;
   });
 
   localStorage.setItem(`auto${iteraciones + 1}`, JSON.stringify(datosAuto));
@@ -183,15 +214,15 @@ function guardarDatos() {
 
 async function actualizarValores() {
   let contador = parseInt(localStorage.getItem("contadorAutos")) || 0;
-  let color; 
-    if (contador === 1) {
-        color = "rosa"
-    }else if (contador === 2) {
-        color = "rojo"
-    }
+  let color;
+  if (contador === 1) {
+    color = "rosa";
+  } else if (contador === 2) {
+    color = "rojo";
+  }
   Swal.fire({
     icon: "success",
-    title: `Datos del auto ${contador} enviados`,
+    title: `Datos del auto ${color} enviados`,
     text: `Se han enviado los datos del auto ${color}`,
     confirmButtonText: "Aceptar",
     customClass: {
@@ -201,9 +232,9 @@ async function actualizarValores() {
         "bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md",
     },
   });
-  if(contador === 2) {
-    document.getElementById("iniciar").hidden = false; 
-    document.getElementById("borrar").hidden  = false; 
+  if (contador === 2) {
+    document.getElementById("iniciar").hidden = false;
+    document.getElementById("borrar").hidden = false;
   }
 }
 
@@ -216,11 +247,11 @@ function cargarDatos() {
 }
 
 function iniciarSimulacion() {
-  let auto1 = JSON.parse(localStorage.getItem("auto1")); // Obtener datos del primer auto desde localStorage
-  let auto2 = JSON.parse(localStorage.getItem("auto2")); // Obtener datos del segundo auto desde localStorage
+  let auto1 = JSON.parse(localStorage.getItem("auto1"));
+  let auto2 = JSON.parse(localStorage.getItem("auto2"));
 
-  let velocidadAuto1 = auto1 ? parseFloat(auto1.velocidad) : null; // Extraer la velocidad del primer auto
-  let velocidadAuto2 = auto2 ? parseFloat(auto2.velocidad) : null; // Extraer la velocidad del segundo auto
+  let velocidadAuto1 = auto1 ? parseFloat(auto1.velocidad) : null;
+  let velocidadAuto2 = auto2 ? parseFloat(auto2.velocidad) : null;
   let tiempoO = parseFloat(document.getElementById("tiempo").value);
   campoDireccion = document.getElementById("direccion-campo").value;
 
