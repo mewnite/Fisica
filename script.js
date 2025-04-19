@@ -15,7 +15,6 @@ function getTime() {
   return `${datosA1.tiempo},${datosA2.tiempo}`;
 }
 
-/*
 window.onload = function () {
   localStorage.removeItem("contadorAutos");
   localStorage.removeItem("auto1");
@@ -24,7 +23,7 @@ window.onload = function () {
   document.getElementById("borrar").hidden = true;
   document.getElementById("iniciar").addEventListener("click", iniciarSimulacion);
 };
-*/
+
 
 function borrar() {
   Swal.fire({
@@ -72,20 +71,6 @@ function veriFicarTipo() {
   }
   return medidas;
 }
-
-/*
-function getVel() {
-  let datosA1 = localStorage.getItem(`auto${1}`);
-  let datosA2 = localStorage.getItem(`auto${2}`);
-  datosA1 = JSON.parse(datosA1);
-  datosA2 = JSON.parse(datosA2)
-  let vel;
-  if (datosA1) {
-    vel = `${datosA1.velocidad},${datosA2.velocidad}`;
-  }
-  return vel;
-}
-*/
 
 function almacenarMedidas() {
   let MtoKm = localStorage.getItem(`auto${1}`)
