@@ -1,22 +1,35 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Crucigrama Aleatorio</title>
-  <link rel="stylesheet" href="juegos.css">
-</head>
-<body>
-  <h1>Crucigrama Aleatorio</h1>
-  <div id="crucigrama"></div>
+    <head>
+        <meta charset="UTF-8">
+        <title>Crucigrama Aleatorio</title>
+        <link rel="stylesheet" href="juegos.css">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div class="juego" id="casa"><i class="fa-solid fa-house"></i></div>
+        <div id="explicador">
+            <h2>📜 Desafío de crucigrama sobre Física.</h2>
+            <p>
+                Este crucigrama fue creado para poner a prueba su conocimiento en física básica: electricidad, MRU y etc. 
+                Cada palabra corresponde a un concepto de algún tema en fisica previamente dado, ¡así que presta atención a las pistas!
+            </p>
+            <p>
+                Observá las pistas a la derecha y completa el tablero.</p>
+        </div>
+        <h1>Crucigrama Aleatorio</h1>
+        <div id="crucigrama"></div>
 
-  <div id="pistas">
-    <h2>Pistas</h2>
-    <ul id="lista-pistas"></ul>
-  </div>
+        <div id="pistas">
+            <h2>Pistas</h2>
+            <ul id="lista-pistas"></ul>
+        </div>
 
-  <button onclick="verificar()">Verificar</button>
-  <p id="resultado"></p>
+        <button onclick="verificar()">Verificar</button>
+        <p id="resultado"></p>
 
-  <script src="juego.js"></script>
-</body>
+        <script src="juego.js"></script>
+        <script src="https://kit.fontawesome.com/927dd3c386.js" crossorigin="anonymous"></script>   
+        <script src="./redirect.js"></script>
+    </body>
 </html>

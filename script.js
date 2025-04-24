@@ -2,7 +2,7 @@ const canvas = document.getElementById("simulacionCanvas");
 const ctx = canvas.getContext("2d");
 canvas.width = 800;
 canvas.height = 400;
-
+document.getElementById("guardar").hidden = false;
 function CalcularSinCanva(vel, temp) {
   return vel / temp;
 }
@@ -16,8 +16,9 @@ function getTime() {
 }
 
 window.onload = function () {
+
   localStorage.removeItem("contadorAutos");
-  localStorage.removeItem("auto1");
+  localStorage.removeItem("auto1"); 
   localStorage.removeItem("auto2");
   document.getElementById("iniciar").hidden = true;
   document.getElementById("borrar").hidden = true;
@@ -44,6 +45,9 @@ function borrar() {
   document.getElementById("iniciar").hidden = true;
   document.getElementById("borrar").hidden = true;
   document.getElementById("iniciar").addEventListener("click", iniciarSimulacion);
+  document.getElementById("guardar").hidden = false;
+  document.getElementById("resultado").innerHTML = "";
+  document.getElementById("btnGrafica").hidden = true; 
 }
 
 function getVel() {
@@ -149,6 +153,7 @@ function dibujarAuto(x, y, color) {
 
 function guardarDatos() {
   let iteraciones = parseInt(localStorage.getItem("contadorAutos")) || 0;
+
   if (
     document.getElementById("velocidad").value === "0" ||
     document.getElementById("tiempo").value === "0"
@@ -158,30 +163,22 @@ function guardarDatos() {
       title: `Error`,
       text: `No puedes tener valores 0`,
       confirmButtonText: "Aceptar",
-      customClass: {
-        popup: "rounded-xl shadow-lg",
-        title: "text-lg font-bold text-gray-700",
-        confirmButton:
-          "bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md",
-      },
     });
     return;
   }
-  if (iteraciones === 2) {
+
+  if (iteraciones >= 2) {
+  
     Swal.fire({
       icon: "error",
       title: `Error`,
       text: `No se pueden enviar más datos`,
       confirmButtonText: "Aceptar",
-      customClass: {
-        popup: "rounded-xl shadow-lg",
-        title: "text-lg font-bold text-gray-700",
-        confirmButton:
-          "bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md",
-      },
     });
     return;
   }
+
+  // Guardar los datos en localStorage
   let datosAuto = {};
   document.querySelectorAll("input").forEach((input) => {
     datosAuto[input.id] = input.value;
@@ -192,8 +189,16 @@ function guardarDatos() {
 
   localStorage.setItem(`auto${iteraciones + 1}`, JSON.stringify(datosAuto));
   localStorage.setItem("contadorAutos", iteraciones + 1);
+
+  // Limpia los campos del formulario
   document.getElementById("velocidad").value = "0";
   document.getElementById("tiempo").value = "0";
+
+  // Actualiza la visibilidad del botón después de guardar
+  if (iteraciones + 1 >= 2) {
+    document.getElementById("guardar").hidden = true;
+  }
+
   actualizarValores();
 }
 

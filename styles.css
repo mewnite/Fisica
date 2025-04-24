@@ -37,9 +37,9 @@ body {
     border: 4px double #5a3e2b;
     box-shadow: 4px 4px #000;
     font-family: 'Courier New', Courier, monospace;
-    user-select: none;
 }
 
+.bloq-explicador:hover { background-color: #e5d2ac; color: #2d1a09; box-shadow: 1px 1px 0 #90856e;transform: translateY(1px);}
 
 .bloq-explicador h2 {
     font-family: 'UnifrakturCook', 'Cinzel', serif;
@@ -149,6 +149,7 @@ h1 {
 }
 
 button {
+    width: 100%;
     font-family: 'Georgia', serif;
     background-color: #f4e3c1; 
     color: #3f2a14; 
@@ -206,13 +207,13 @@ canvas {
 }
 
 .juego{
- border: 1px solid #3e1515;
+  border: 1px solid #5a3e2b;
   position: fixed;
   top: 10px; 
   left: 10px; 
   width: 50px;
   height: 50px;
-  background-color: #f2e7cb;
+  background-color: #c9ba95;
   border-radius: 100%;
   display: flex;
   justify-content: center;
@@ -223,7 +224,7 @@ canvas {
 }
 
 .juego:hover{
-  background-color: #e5d2ac;
+  background-color: #968967;
   color:#333;
 }
 
@@ -290,7 +291,6 @@ body {
     background-size: cover;
     background-position: center;
 }
-
 
 @media (max-width: 768px) {
     .container-p {
