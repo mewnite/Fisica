@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MRU</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container-p" id="contenedor">
+        <div class="bloq-simulador">
+            <h1>Simulación de MRU</h1>
+            <div class="controls">
+                <div class="control-item">
+                    <fieldset>
+                        <legend>Velocidad</legend>
+                        <div class="form-group">
+                            <input type="number" id="velocidad" min="0" required>
+                            <span class="tooltip">Ingresa la velocidad</span>
+                        </div>
+                        <select name="medida" id="medida">
+                            <option value="km">km</option>
+                            <option value="m">m</option>
+                        </select>
+                    </fieldset>
+                </div>
+                <div class="control-item">
+                    <fieldset>
+                        <legend id="auto">Tiempo</legend>
+                        <div class="form-group">
+                            <input type="number" id="tiempo" min="0">
+                            <span class="tooltip">Ingresa el tiempo</span>
+                        </div>
+                        <select name="tiempo" id="tmp">
+                            <option name="horas" id="hs">horas</option>
+                            <option name="minutos" id="mins">minutos</option>
+                            <option name="segundos" id="seg">segundos</option>
+                        </select>
+                    </fieldset>
+                </div>
+                <div class="control-item">
+                    <label for="direccion-campo" class="dir">Dirección del movimiento: </label>
+                    <select id="direccion-campo">
+                        <option value="derecha">Derecha</option>
+                        <option value="izquierda">Izquierda</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="resultado"></div>
+            <div class="botones" id="botones">
+                <button onclick="iniciarSimulacion()" id="iniciar">Iniciar simulacion</button>
+            </div>
+        </div>
+
+        <div class="simulacion">
+            <canvas id="simulacionCanvas"></canvas>
+        </div>
+    </div>
+    </div>
+    <script src="./scriptmru.js"></script>
+    <script src="./logicaGraficaMRU.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+
+</html>

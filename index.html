@@ -1,78 +1,16 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulación de MRU</title>
+    <title>Pagina principal</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="./redirect.js" defer></script>
 </head>
 <body>
-    <div class="container-p" id="contenedor">
-        <div class="bloq-explicador">
-            <h2>¿Cómo funciona el simulador?</h2>
-            <ul>
-                <li>Este simulador le permite experimentar con el <strong>Movimiento Rectilíneo Uniforse (MRU)</strong>, es decir, cuando un objeto se mueve a <strong>velocidad constante</strong> en línea recta. <br></li>
-                <li> Para comenzar, ingresa un valor en el campo de <strong>Velocidad</strong> y elige su unidad (por ejemplo, km/h o m/s). Esta será la rapidez con la que se moverá el objeto. </li>
-                <li>Luego, completa elvalor del <strong>Tiempo</strong> que durara el movimiento, y seleccioná la unidad correspondiente (horas, segundos, etc)</li>
-                <li>Elige la <strong>dirección</strong> en la que qerés que se desplace el objeto: derecha o izquierda</li>
-                <li>Presione el botón <strong>"Guardar datos</strong> para cargar sus valorws. Después, haga clic en <strong>"Iniciar simulación"</strong> para ver cómo se mueve el objeto en la animación de la derecha.</li>
-                <li>Puede probar distintos valores para observar cómo cambia la distancia recorrida. <br></li>
-                <li>Si quiere reiniciar todo, use el botón <strong>"Borrar datos"</strong> y comience una nueva simulación.</li>
-            </ul>
-        </div>
-        <div class="bloq-simulador">
-            <h1>Simulación de MRU</h1>
-            <div class="controls">
-                <div class="control-item">
-            <fieldset>
-                <legend>Velocidad</legend>
-                <input type="number" id="velocidad" value="0" min="0">
-                <select name="medida" id="medida">
-                    <option value="km">km</option>
-                    <option value="m">m</option>
-                </select>
-            </fieldset>
-            </div>
-
-            <div class="control-item">
-                <fieldset>
-                    <legend id="auto">Tiempo</legend>
-                    <input type="number" id="tiempo" value="0" min="0">
-                    <select name="tiempo" id="tmp">
-                    <option name="horas" id="hs">horas</option>
-                    <option name="minutos" id="mins">minutos</option>
-                    <option name="segundos" id="seg">segundos</option>
-                </select>
-                </fieldset>
-            </div>
-            <div class="control-item">
-                <label for="direccion-campo">Dirección del movimiento: </label>
-                <select id="direccion-campo">
-                    <option value="derecha">Derecha</option>
-                    <option value="izquierda">Izquierda</option>
-                </select>
-            </div>
-        </div>
-    
-        <div id="resultado"></div>
-        <div class="botones" id="botones">
-            <button onclick="guardarDatos()" id="guardar">Guardar datos</button>
-        <button onclick="iniciarSimulacion()" hidden id="iniciar">Iniciar simulacion</button>
-        </div>
-        <button class="borrar" id="borrar" hidden onclick="borrar()">Borrar datos</button>
-        </div>
-
-        <div class="simulacion">
-            <canvas id="simulacionCanvas"></canvas>
-        </div>
-        </div>
-    </div>
-    <div class="juego" id="juego"><i class="fa-solid fa-gamepad"></i></div>
-    <script src="script.js"></script>
-    <script src="https://kit.fontawesome.com/927dd3c386.js" crossorigin="anonymous"></script>   
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="logicaGrafica.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   <div class="contenedorBotones">
+    <a href="./.html"><button>MRU</button></a>
+    <a href="./encuentros.html"><button>Encuentros</button></a>
+    <a href="./juego.html"><button>Juego</button></a>
+   </div>
 </body>
 </html>
