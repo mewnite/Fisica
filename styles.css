@@ -138,23 +138,41 @@
   }
   
   .controls {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
   }
   
-  .control-item,
-  fieldset {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  
+  .control-item {
+    flex: 1 1 300px; 
+    max-width: 100%; 
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 8px;
     background-color: rgba(255, 255, 255, 0.1);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
+
+
+
+  .control-item,
+ fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-width: 300px; 
+  max-width: 100%; 
+  width: 100%;
+  box-sizing: border-box; 
+}
+
   
   .control-item label {
     font-weight: bold;
@@ -297,11 +315,13 @@
     align-items: center;
     justify-content: space-between;
     gap: 10px;
+    flex-wrap: wrap;
   }
   
   fieldset input,
   fieldset select {
     width: 100%;
+    max-width: 400px; 
     padding: 8px;
     font-size: 1em;
     border: 1px solid #ccc;
@@ -309,6 +329,7 @@
     background-color: transparent;
     color: #333;
   }
+  
   
   .borrar {
     background-color: rgb(212, 5, 5);
@@ -338,15 +359,35 @@
   }
   
   @media (max-width: 768px) {
+
+
+    fieldset {
+        min-width: 100%; 
+      }
+      
+      fieldset .control-group {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    
+      fieldset input,
+      fieldset select {
+        max-width: 100%; 
+      }
+
+  .control-item {
+    flex: 1 1 100%; 
+  }
     .container-p {
       flex-direction: column;
-      align-items: center;
-      gap: 1.5rem;
+      align-items: stretch;
+
     }
   
     .bloq-simulador {
       width: 90% !important;
       max-width: 500px;
+      min-width: 318px;
     }
   
     .controls,
