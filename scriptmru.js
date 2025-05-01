@@ -85,6 +85,7 @@ function actualizarSimulacion() {
 }
 
 function detenerSimulacion() {
+    document.getElementById("borrar").hidden = false;
     let velocidadInput = parseFloat(document.getElementById("velocidad").value);
     let tiempoInput = parseFloat(document.getElementById("tiempo").value);
     let distancia = calcularMRU(velocidadInput, tiempoInput);

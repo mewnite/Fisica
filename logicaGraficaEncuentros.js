@@ -6,13 +6,14 @@ document.addEventListener("DOMContentLoaded", () => {
             let velocidad = datosAuto.velocidad;
             tiempo = datosAuto.tiempo
             unidadVelocidad =datosAuto.medida;
-            unidadTiempo = datosAuto.tmp; 
+            unidadTiempo = datosAuto.tmp;
+        
 
             if (tiempo <= 0 || velocidad <= 0) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'Por favor, ingresa valores válidos para la velocidad y el tiempo.',
+                    text: 'Por favor, ingresa valores válidos para la velocidad, el tiempo y la distancia inicial',
                 });
                 return;
             }

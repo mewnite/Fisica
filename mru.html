@@ -57,6 +57,7 @@
             <div id="resultado"></div>
             <div class="botones" id="botones">
                 <button onclick="iniciarSimulacion()" id="iniciar">Iniciar simulacion</button>
+                <button onclick="borrar()" id="borrar" class="borrar" hidden>Borrar datos</button>
             </div>
         </div>
 
@@ -65,6 +66,21 @@
         </div>
     </div>
     </div>
+    <div class="juego" id="casa"><i class="fa-solid fa-house"></i></div>
+    <script>
+        function borrar(){
+  localStorage.clear();
+  document.getElementById("borrar").hidden = true;
+  document.getElementById("resultado").innerHTML = "";
+  document.querySelectorAll("input").forEach(input => {
+    input.value = "";
+  });
+  document.getElementById("btnGrafica").remove();
+  preDibujarSimulacion();
+}
+    </script>
+    <script src="./redirect.js"></script>
+    <script src="https://kit.fontawesome.com/927dd3c386.js" crossorigin="anonymous"></script>   
     <script src="./scriptmru.js"></script>
     <script src="./logicaGraficaMRU.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
