@@ -8,14 +8,13 @@ function CalcularSinCanva(vel, temp) {
   return vel / temp;
 }
 
-/*
 window.onload = function (){
 localStorage.clear();
 }
-*/
 
 
-function borrar(){
+
+function borrar() {
   localStorage.clear();
   document.getElementById("guardar").hidden = false;
   document.getElementById("iniciar").hidden = true;
@@ -44,7 +43,9 @@ function getVel() {
 function verificarTipo() {
   let MtoKm = document.getElementById("medida").value;
   let Hms = document.getElementById("tmp").value;
-  return (MtoKm === "km" && Hms === "horas") || (MtoKm === "m" && Hms === "segundos");
+  return (
+    (MtoKm === "km" && Hms === "horas") || (MtoKm === "m" && Hms === "segundos")
+  );
 }
 
 function almacenarMedidas() {
@@ -65,19 +66,23 @@ function calcular() {
   }
 }
 
-function calcularEncuentro(){
+function calcularEncuentro() {
   let { auto1, auto2 } = getDataFromLocalStorage();
 
   let v1 = parseFloat(auto1.velocidad);
   let v2 = parseFloat(auto2.velocidad);
 
-  let x1 = parseFloat(canvas.width / 2); 
+  let x1 = parseFloat(canvas.width / 2);
   let x2 = parseFloat(canvas.width / 2 + 100);
-  if(v1 <= v2){
-    Swal.fire({ icon: "error", title: "Error", text: "El auto 1 no puede ser más lento que el auto 2" }); 
+  if (v1 <= v2) {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "El auto 1 no puede ser más lento que el auto 2",
+    });
     return;
   }
-return tiempoencuentro = (x2 - x1) / (v1 - v2);
+  return (tiempoencuentro = (x2 - x1) / (v1 - v2));
 }
 
 let x1 = canvas.width / 2;
@@ -120,16 +125,28 @@ function guardarDatos() {
   let iteraciones = parseInt(localStorage.getItem("contadorAutos")) || 0;
   let velocidadInput = document.getElementById("velocidad").value;
   let tiempoInput = document.getElementById("tiempo").value;
-  if (velocidadInput <= "0" || tiempoInput <= "0" ) {
-    Swal.fire({ icon: "error", title: "Error", text: "No puedes tener valores 0 o negativos" });
+  if (velocidadInput <= "0" || tiempoInput <= "0") {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "No puedes tener valores 0 o negativos",
+    });
     return;
   }
-  if (velocidadInput === "" || tiempoInput === "" ) {
-    Swal.fire({ icon: "error", title: "Error", text: "No puedes tener valores nulos" });
+  if (velocidadInput === "" || tiempoInput === "") {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "No puedes tener valores nulos",
+    });
     return;
   }
   if (iteraciones >= 2) {
-    Swal.fire({ icon: "error", title: "Error", text: "No se pueden enviar más datos" });
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "No se pueden enviar más datos",
+    });
     return;
   }
   let datosAuto = {};
@@ -142,7 +159,21 @@ function guardarDatos() {
   if (iteraciones === 1) {
     let auto1 = JSON.parse(localStorage.getItem("auto1"));
     if (parseFloat(auto1.velocidad) <= parseFloat(datosAuto.velocidad)) {
-      Swal.fire({ icon: "error", title: "Error", text: "La velocidad del auto 1 no puede ser menor o igual que la del auto 2" });
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "La velocidad del auto 1 no puede ser menor o igual que la del auto 2",
+      });
+      return;
+    } else if (
+      auto1.direccionCampo == "izquierda" &&
+      datosAuto.direccionCampo == "derecha"
+    ) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Los autos tienen que poder encontrarse",
+      });
       return;
     }
   }
@@ -170,21 +201,38 @@ async function actualizarValores() {
   }
 }
 
-
 function iniciarSimulacion() {
   let { auto1, auto2 } = getDataFromLocalStorage();
   let velocidadAuto1 = parseFloat(auto1.velocidad);
   let velocidadAuto2 = parseFloat(auto2.velocidad);
-  let tiempoAuto1 =  parseFloat(auto1.tiempo);
+  let tiempoAuto1 = parseFloat(auto1.tiempo);
   let tiempoAuto2 = parseFloat(auto2.tiempo);
 
-  if (isNaN(velocidadAuto1) || velocidadAuto1 < 0 || isNaN(velocidadAuto2) || velocidadAuto2 < 0) {
-    Swal.fire({ icon: "warning", title: "Oops...", text: "La velocidad de los autos no puede ser negativa o inválida." });
+  if (
+    isNaN(velocidadAuto1) ||
+    velocidadAuto1 < 0 ||
+    isNaN(velocidadAuto2) ||
+    velocidadAuto2 < 0
+  ) {
+    Swal.fire({
+      icon: "warning",
+      title: "Oops...",
+      text: "La velocidad de los autos no puede ser negativa o inválida.",
+    });
     return;
   }
 
-  if (isNaN(tiempoAuto1) || tiempoAuto1 < 0 || isNaN(tiempoAuto2) || tiempoAuto2 < 0) {
-    Swal.fire({ icon: "warning", title: "Oops...", text: "El tiempo no puede ser negativo o inválido." });
+  if (
+    isNaN(tiempoAuto1) ||
+    tiempoAuto1 < 0 ||
+    isNaN(tiempoAuto2) ||
+    tiempoAuto2 < 0
+  ) {
+    Swal.fire({
+      icon: "warning",
+      title: "Oops...",
+      text: "El tiempo no puede ser negativo o inválido.",
+    });
     return;
   }
 
@@ -200,8 +248,10 @@ function actualizarSimulacion() {
     tiempo += 0.1;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    let desplazamientoAuto1 = velocidad.auto1 * tiempo + 0.5 * aceleracion * Math.pow(tiempo, 2);
-    let desplazamientoAuto2 = velocidad.auto2 * tiempo + 0.5 * aceleracion * Math.pow(tiempo, 2);
+    let desplazamientoAuto1 =
+      velocidad.auto1 * tiempo + 0.5 * aceleracion * Math.pow(tiempo, 2);
+    let desplazamientoAuto2 =
+      velocidad.auto2 * tiempo + 0.5 * aceleracion * Math.pow(tiempo, 2);
     let { auto1, auto2 } = getDataFromLocalStorage();
 
     // Movimiento para cada auto según su dirección
@@ -236,19 +286,20 @@ function actualizarSimulacion() {
   }
 }
 
-
-
-
 function detenerSimulacion() {
   moviendo = false;
-  calcular().split(";").forEach((resultado) => {
-    let resultadoDiv = document.createElement("div");
-    resultadoDiv.innerHTML = resultado;
-    document.getElementById("resultado").appendChild(resultadoDiv);
-  })
+  calcular()
+    .split(";")
+    .forEach((resultado) => {
+      let resultadoDiv = document.createElement("div");
+      resultadoDiv.innerHTML = resultado;
+      document.getElementById("resultado").appendChild(resultadoDiv);
+    });
 
   if (!document.getElementById("btnGrafica")) {
-    let mostrar = document.getElementById("contenedor").appendChild(document.createElement("button"));
+    let mostrar = document
+      .getElementById("contenedor")
+      .appendChild(document.createElement("button"));
     mostrar.innerHTML = "Mostrar gráfica";
     mostrar.id = "btnGrafica";
   }
