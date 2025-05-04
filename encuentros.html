@@ -1,22 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MRU</title>
+    <title>Simulación de MRU</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="./redirect.js" defer></script>
     <link rel="icon" href="./logo.png" type="image/x-icon">
     <meta property="og:title" content="Calculadora de MRU">
     <meta property="og:description" content="calcula MRU y encuentros con estilo ;)">
     <meta property="og:image" content="./logo.png">
     <meta property="og:url" content="https://mewnite.github.io/">
-    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
     <div class="container-p" id="contenedor">
         <div class="bloq-simulador">
-            <h1>Simulación de MRU</h1>
+            <h1>Simulación de Encuentros</h1>
             <div class="controls">
                 <div class="control-item">
                     <fieldset>
@@ -46,8 +47,8 @@
                     </fieldset>
                 </div>
                 <div class="control-item">
-                    <label for="direccion-campo" class="dir">Dirección del movimiento: </label>
-                    <select id="direccion-campo">
+                    <label for="direccionCampo" class="dir">Dirección del movimiento: </label>
+                    <select id="direccionCampo">
                         <option value="derecha">Derecha</option>
                         <option value="izquierda">Izquierda</option>
                     </select>
@@ -56,9 +57,10 @@
 
             <div id="resultado"></div>
             <div class="botones" id="botones">
-                <button onclick="iniciarSimulacion()" id="iniciar">Iniciar simulacion</button>
-                <button onclick="borrar()" id="borrar" class="borrar" hidden>Borrar datos</button>
+                <button onclick="guardarDatos()" id="guardar">Guardar datos</button>
+                <button onclick="iniciarSimulacion()" hidden id="iniciar">Iniciar simulacion</button>
             </div>
+            <button class="borrar" id="borrar" hidden onclick="borrar()">Borrar datos</button>
         </div>
 
         <div class="simulacion">
@@ -67,24 +69,12 @@
     </div>
     </div>
     <div class="juego" id="casa"><i class="fa-solid fa-house"></i></div>
-    <script>
-        function borrar(){
-  localStorage.clear();
-  document.getElementById("borrar").hidden = true;
-  document.getElementById("resultado").innerHTML = "";
-  document.querySelectorAll("input").forEach(input => {
-    input.value = "";
-  });
-  document.getElementById("btnGrafica").remove();
-  preDibujarSimulacion();
-}
-    </script>
-    <script src="./redirect.js"></script>
-    <script src="https://kit.fontawesome.com/927dd3c386.js" crossorigin="anonymous"></script>   
-    <script src="./scriptmru.js"></script>
-    <script src="./logicaGraficaMRU.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+    <script src="https://kit.fontawesome.com/927dd3c386.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="logicaGraficaEncuentros.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
 </body>
 
 </html>
