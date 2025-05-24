@@ -8,11 +8,9 @@ function CalcularSinCanva(vel, temp) {
   return vel / temp;
 }
 
-window.onload = function (){
-localStorage.clear();
-}
-
-
+window.onload = function () {
+  localStorage.clear();
+};
 
 function borrar() {
   localStorage.clear();
@@ -60,7 +58,7 @@ function calcular() {
     let tiempos = getTime().split(",");
     let res1 = CalcularSinCanva(velocidades[0], tiempos[0]);
     let res2 = CalcularSinCanva(velocidades[1], tiempos[1]);
-    return `La distancia recorrida por el auto rosa es: ${res1} ${almacenarMedidas()};por el rojo ${res2} ${almacenarMedidas()} ademas se encontrarán en ${calcularEncuentro()}segundos`;
+    return `La distancia recorrida por el auto rosa es: ${res1} ${almacenarMedidas()};por el rojo ${res2} ${almacenarMedidas()} ademas se encontrarán en ${calcularEncuentro().toFixed(2)}segundos`;
   } else {
     return "Error, verifica las unidades de medida seleccionadas";
   }
@@ -69,20 +67,40 @@ function calcular() {
 function calcularEncuentro() {
   let { auto1, auto2 } = getDataFromLocalStorage();
 
-  let v1 = parseFloat(auto1.velocidad);
-  let v2 = parseFloat(auto2.velocidad);
-
+  let v1 = parseFloat(auto1.velocidad) || 0;
+  let v2 = parseFloat(auto2.velocidad) || 0;
   let x1 = parseFloat(canvas.width / 2);
   let x2 = parseFloat(canvas.width / 2 + 100);
-  if (v1 <= v2) {
+  let dir1 = auto1.direccionCampo;
+  let dir2 = auto2.direccionCampo;
+
+  if (dir1 === dir2) {
+    if (v1 <= v2) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "El auto 1 no puede ser más lento que el auto 2 si van en la misma dirección",
+      });
+      return;
+    }
+    // Cálculo del tiempo en que el auto 2 alcanza al auto 1
+    let tiempoEncuentro = Math.abs(x2 - x1) / (v1 - v2);
+    return tiempoEncuentro;
+  } else if (
+    (dir1 === "izquierda" && dir2 === "derecha") ||
+    (dir1 === "derecha" && dir2 === "izquierda")
+  ) {
+    // Autos en direcciones opuestas
+    let tiempoEncuentro = Math.abs(x2 - x1) / (v1 + v2);
+    return tiempoEncuentro;
+  } else {
     Swal.fire({
       icon: "error",
       title: "Error",
-      text: "El auto 1 no puede ser más lento que el auto 2",
+      text: "Direcciones no válidas para calcular el encuentro",
     });
     return;
   }
-  return (tiempoencuentro = (x2 - x1) / (v1 - v2));
 }
 
 let x1 = canvas.width / 2;
