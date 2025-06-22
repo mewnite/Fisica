@@ -3,115 +3,139 @@ const ctx = canvas.getContext("2d");
 canvas.width = 800;
 canvas.height = 400;
 
-let x = canvas.width / 2;
+let x = 20;
 let y = canvas.height / 2;
-let velocidad = 0;  // Inicializamos la velocidad en 0
-let campoDireccion = "derecha";
+let velocidad = 0;
+let tiempoTotal = 0;
+let distanciaTotal = 0;
 let moviendo = false;
 
-function calcularMRU(val1, val2) {
-    return val1 / val2; 
+function calcularDistancia(vel, tiempo) {
+  return vel * tiempo;
 }
 
-function preDibujarSimulacion() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    x = canvas.width / 2;
-    y = canvas.height / 2;
-
-    dibujarAuto(x, y, "pink");
-    dibujarRecta(campoDireccion);
+function calcularVelocidad(distancia, tiempo) {
+  return distancia / tiempo;
 }
 
-function dibujarAuto(x, y, color) {
-    ctx.fillStyle = color;
-    ctx.fillRect(x - 20, y - 10, 40, 20);
-
-    ctx.fillStyle = "lightblue";
-    ctx.fillRect(x - 10, y - 20, 20, 10);
-
-    ctx.fillStyle = "black";
-    ctx.beginPath();
-    ctx.arc(x - 15, y + 10, 5, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(x + 15, y + 10, 5, 0, Math.PI * 2);
-    ctx.fill();
+function calcularTiempo(distancia, vel) {
+  return distancia / vel;
 }
 
 function verificarValores() {
-    let velocidadInput = document.getElementById("velocidad").value;
-    let tiempoInput = document.getElementById("tiempo").value;
+  const velInput = document.getElementById("velocidad").value;
+  const tiempoInput = document.getElementById("tiempo").value;
+  const distInput = document.getElementById("distancia").value;
 
-    if (velocidadInput === "" || tiempoInput === "" || velocidadInput === "0" || tiempoInput === "0" || parseFloat(velocidadInput) < 0 || parseFloat(tiempoInput) < 0) {
-        Swal.fire({ icon: "error", title: "Error", text: "No puedes tener valores nulos o menores a 1" });
-        return false;
-    }
-    return true;
+  let vel = parseFloat(velInput);
+  let tiempo = parseFloat(tiempoInput);
+  let dist = parseFloat(distInput);
+
+  let llenos = [vel, tiempo, dist].filter(v => !isNaN(v) && v > 0);
+
+  if (llenos.length < 2) {
+    Swal.fire({ icon: "error", title: "Error", text: "Debes ingresar al menos dos valores válidos mayores que 0." });
+    return false;
+  }
+  return true;
 }
 
 function iniciarSimulacion() {
-    if (verificarValores()) {
-        let velocidadInput = parseFloat(document.getElementById("velocidad").value);
-        let tiempoInput = parseFloat(document.getElementById("tiempo").value);
-        let distancia = calcularMRU(velocidadInput, tiempoInput);
-       
-        velocidad = velocidadInput; // Asignamos la velocidad ingresada por el usuario
-        moviendo = true;
-        requestAnimationFrame(actualizarSimulacion);
-    }
+  if (!verificarValores()) return;
+
+  let velInput = parseFloat(document.getElementById("velocidad").value);
+  let tiempoInput = parseFloat(document.getElementById("tiempo").value);
+  let distInput = parseFloat(document.getElementById("distancia").value);
+
+  if (isNaN(velInput)) {
+    velocidad = calcularVelocidad(distInput, tiempoInput);
+    document.getElementById("velocidad").value = velocidad.toFixed(2);
+  } else if (isNaN(tiempoInput)) {
+    tiempoTotal = calcularTiempo(distInput, velInput);
+    document.getElementById("tiempo").value = tiempoTotal.toFixed(2);
+  } else if (isNaN(distInput)) {
+    distanciaTotal = calcularDistancia(velInput, tiempoInput);
+    document.getElementById("distancia").value = distanciaTotal.toFixed(2);
+  }
+
+  if (!isNaN(velInput)) velocidad = velInput;
+  if (!isNaN(tiempoInput)) tiempoTotal = tiempoInput;
+  if (!isNaN(distInput)) distanciaTotal = distInput;
+
+  if (distanciaTotal === 0) {
+    distanciaTotal = calcularDistancia(velocidad, tiempoTotal);
+    document.getElementById("distancia").value = distanciaTotal.toFixed(2);
+  }
+
+  x = 20;
+  moviendo = true;
+  requestAnimationFrame(actualizarSimulacion);
 }
 
 function actualizarSimulacion() {
-    if (moviendo) {
-        let tiempo = 0.1; 
-        let desplazamiento = velocidad * tiempo * 0.5 + 20; 
+  if (!moviendo) return;
 
-        if (campoDireccion === "derecha") {
-            x += desplazamiento;
-        } else {
-            x -= desplazamiento;
-        }
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        dibujarAuto(x, y, "pink");
-        dibujarRecta(campoDireccion);
+  const kmAPixel = 200; 
+  const velocidadPxPorHora = velocidad * kmAPixel;
+  const framesPorSegundo = 60;
+  const desplazamientoPorFrame = velocidadPxPorHora / framesPorSegundo;
 
-        if ((campoDireccion === "derecha" && x > canvas.width - 20) || (campoDireccion === "izquierda" && x < 20)) {
-            detenerSimulacion();
-        } else {
-            requestAnimationFrame(actualizarSimulacion);
-        }
-    }
+  x += desplazamientoPorFrame;
+
+  dibujarAuto(x, y, "pink");
+  dibujarRecta();
+
+  if (x >= canvas.width - 20) {
+    detenerSimulacion();
+  } else {
+    requestAnimationFrame(actualizarSimulacion);
+  }
 }
 
 function detenerSimulacion() {
-    document.getElementById("borrar").hidden = false;
-    let velocidadInput = parseFloat(document.getElementById("velocidad").value);
-    let tiempoInput = parseFloat(document.getElementById("tiempo").value);
-    let distancia = calcularMRU(velocidadInput, tiempoInput);
-    document.getElementById("resultado").innerHTML = `La distancia recorrida es: ${distancia} km`;
-    moviendo = false;
-    if (!document.getElementById("btnGrafica")) {
-        let mostrar = document.getElementById("contenedor").appendChild(document.createElement("button"));
-        mostrar.innerHTML = "Mostrar gráfica";
-        mostrar.id = "btnGrafica";
-      }
-    
-    preDibujarSimulacion();
+  moviendo = false;
+  document.getElementById("resultado").innerHTML = `
+    Resultados:<br>
+    Velocidad: ${velocidad.toFixed(2)} km/h<br>
+    Tiempo: ${tiempoTotal.toFixed(2)} horas<br>
+    Distancia: ${distanciaTotal.toFixed(2)} km
+  `;
+  preDibujarSimulacion();
 }
 
-function dibujarRecta(direccion) {
-    ctx.strokeStyle = "lightgreen";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    if (direccion === "derecha") {
-        ctx.moveTo(0, canvas.height / 2);
-        ctx.lineTo(canvas.width, canvas.height / 2);
-    } else {
-        ctx.moveTo(canvas.width, canvas.height / 2);
-        ctx.lineTo(0, canvas.height / 2);
-    }
-    ctx.stroke();
+function dibujarAuto(x, y, color) {
+  ctx.fillStyle = color;
+  ctx.fillRect(x - 20, y - 10, 40, 20);
+
+  ctx.fillStyle = "lightblue";
+  ctx.fillRect(x - 10, y - 20, 20, 10);
+
+  ctx.fillStyle = "black";
+  ctx.beginPath();
+  ctx.arc(x - 15, y + 10, 5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(x + 15, y + 10, 5, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function dibujarRecta() {
+  ctx.strokeStyle = "lightgreen";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(0, canvas.height / 2);
+  ctx.lineTo(canvas.width, canvas.height / 2);
+  ctx.stroke();
+}
+
+function preDibujarSimulacion() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  x = 20;
+  y = canvas.height / 2;
+  dibujarAuto(x, y, "pink");
+  dibujarRecta();
 }
 
 preDibujarSimulacion();

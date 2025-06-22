@@ -2,15 +2,15 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>MRU</title>
-    <link rel="icon" href="./logo.png" type="image/x-icon">
-    <meta property="og:title" content="Calculadora de MRU">
-    <meta property="og:description" content="calcula MRU y encuentros con estilo ;)">
-    <meta property="og:image" content="./logo.png">
-    <meta property="og:url" content="https://mewnite.github.io/">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="./logo.png" type="image/x-icon" />
+    <meta property="og:title" content="Calculadora de MRU" />
+    <meta property="og:description" content="calcula MRU y encuentros con estilo ;)" />
+    <meta property="og:image" content="./logo.png" />
+    <meta property="og:url" content="https://mewnite.github.io/" />
+    <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
@@ -22,7 +22,7 @@
                     <fieldset>
                         <legend>Velocidad</legend>
                         <div class="form-group">
-                            <input type="number" id="velocidad" min="0" required>
+                            <input type="number" id="velocidad" min="0" placeholder="Deja vacío si quieres calcular" />
                             <span class="tooltip">Ingresa la velocidad</span>
                         </div>
                         <select name="medida" id="medida">
@@ -33,15 +33,28 @@
                 </div>
                 <div class="control-item">
                     <fieldset>
-                        <legend id="auto">Tiempo</legend>
+                        <legend>Tiempo</legend>
                         <div class="form-group">
-                            <input type="number" id="tiempo" min="0">
+                            <input type="number" id="tiempo" min="0" placeholder="Deja vacío si quieres calcular" />
                             <span class="tooltip">Ingresa el tiempo</span>
                         </div>
                         <select name="tiempo" id="tmp">
-                            <option name="horas" id="hs">horas</option>
-                            <option name="minutos" id="mins">minutos</option>
-                            <option name="segundos" id="seg">segundos</option>
+                            <option value="horas">horas</option>
+                            <option value="minutos">minutos</option>
+                            <option value="segundos">segundos</option>
+                        </select>
+                    </fieldset>
+                </div>
+                <div class="control-item">
+                    <fieldset>
+                        <legend>Distancia</legend>
+                        <div class="form-group">
+                            <input type="number" id="distancia" min="0" placeholder="Deja vacío si quieres calcular" />
+                            <span class="tooltip">Ingresa la distancia</span>
+                        </div>
+                        <select name="distancia" id="medidaDistancia">
+                            <option value="km">km</option>
+                            <option value="m">m</option>
                         </select>
                     </fieldset>
                 </div>
@@ -56,7 +69,7 @@
 
             <div id="resultado"></div>
             <div class="botones" id="botones">
-                <button onclick="iniciarSimulacion()" id="iniciar">Iniciar simulacion</button>
+                <button onclick="iniciarSimulacion()" id="iniciar">Iniciar simulación</button>
                 <button onclick="borrar()" id="borrar" class="borrar" hidden>Borrar datos</button>
             </div>
         </div>
@@ -65,22 +78,21 @@
             <canvas id="simulacionCanvas"></canvas>
         </div>
     </div>
-    </div>
     <div class="juego" id="casa"><i class="fa-solid fa-house"></i></div>
     <script>
-        function borrar(){
-  localStorage.clear();
-  document.getElementById("borrar").hidden = true;
-  document.getElementById("resultado").innerHTML = "";
-  document.querySelectorAll("input").forEach(input => {
-    input.value = "";
-  });
-  document.getElementById("btnGrafica").remove();
-  preDibujarSimulacion();
-}
+        function borrar() {
+            localStorage.clear();
+            document.getElementById("borrar").hidden = true;
+            document.getElementById("resultado").innerHTML = "";
+            document.querySelectorAll("input").forEach((input) => {
+                input.value = "";
+            });
+            document.getElementById("btnGrafica")?.remove();
+            preDibujarSimulacion();
+        }
     </script>
     <script src="./redirect.js"></script>
-    <script src="https://kit.fontawesome.com/927dd3c386.js" crossorigin="anonymous"></script>   
+    <script src="https://kit.fontawesome.com/927dd3c386.js" crossorigin="anonymous"></script>
     <script src="./scriptmru.js"></script>
     <script src="./logicaGraficaMRU.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
